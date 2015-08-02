@@ -40,7 +40,6 @@ class Caller(object):
         verbose mode getter
         """
         return self.verbose
-
         
     def ip_setter(self, ip=""):
         """
@@ -85,7 +84,6 @@ class Caller(object):
         port getter
         """
         return self.verb
-
 
     def call_route(self, route="", verb=""):
         """
