@@ -128,8 +128,6 @@ class Caller(object):
             call += "POST "
         else:
             call += verb + " "
-            if self.verbose:
-                print "warning - caller.py: verb is empty. Use POST as default verb"
 
         if data is not None:
             call += " -d " + data
