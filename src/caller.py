@@ -20,27 +20,23 @@ class Caller(object):
     Class to make call to web service
     """
 
-    def __init__(self, verbose=0, ip="", port=""):
+    def __init__(self, verbose=0, serverip=None, port=None):
         """
         Class constructor
         """
         self.verbose = verbose
-        self.ip = None
+        self.serverip = None
         self.port = None
-        self.verb = None
 
-        if ip is "":
-            self.set_ip(ip)
+        if serverip is not None:
+            self.set_ip(serverip=serverip)
         else:
             self.set_ip("localhost")
 
-        if port is "":
+        if port is not None:
             self.set_port("8080")
         else:
             self.set_port(port)
-
-        self.set_verb(verb="POST")
-        self.data = ""
 
     def set_verbose(self, verbose=0):
         """
@@ -54,27 +50,28 @@ class Caller(object):
         """
         return self.verbose
 
-    def set_ip(self, ip=""):
+    def set_ip(self, serverip=""):
         """
         IP setter
         """
-        if type(ip) is basestring:
-            if ip[0:3] is not "http":
-                self.ip = "http://" + ip
-            else:
-                self.ip = ip
+        if str(serverip[0:3]) is not "http":
+            self.serverip = "http://" + str(serverip)
+        else:
+            self.serverip = str(serverip)
+        if self.verbose:
+            print "info - caller.py: IP is " + str(self.serverip)
 
     def get_ip(self):
         """
         IP getter
         """
-        return self.ip
+        return self.serverip
 
     def check_ip(self):
         """
         Check IP validity
         """
-        if self.ip is "":
+        if self.serverip is "" or self.serverip is None:
             if self.verbose:
                 print "error - caller.py: IP is wrong. Please set a correct value"
             return 1
@@ -87,10 +84,10 @@ class Caller(object):
         """
         port setter
         """
-        if type(port) is not basestring:
-            self.port = str(port)
-        else:
-            self.port = port
+        self.port = str(port)
+
+        if self.verbose:
+            print "info - caller.py: set port is " + self.port
 
     def get_port(self):
         """
@@ -102,7 +99,7 @@ class Caller(object):
         """
         Check port validitya
         """
-        if self.port is "":
+        if self.port is "" or self.port is None:
             if self.verbose:
                 print "error - caller.py: port is wrong. Please set a correct value"
             return 1
@@ -111,37 +108,11 @@ class Caller(object):
                 print "info - caller.py: port is correct"
             return 0
 
-    def set_data(self, data=""):
-        """
-        port setter
-        """
-        self.data = data
-
-    def get_data(self):
-        """
-        port getter
-        """
-        return self.data
-
-    def set_verb(self, verb):
-        """
-        port setter
-        """
-        self.verb = verb
-
-    def get_verb(self):
-        """
-        port getter
-        """
-        return self.verb
-
     def call_route(self, route="", verb="", data=None):
         """
         Function to make a call
         route defines the service to call
         """
-
-        call = "curl -X "
 
         if self.check_ip():
             return 1
@@ -149,26 +120,21 @@ class Caller(object):
         if self.check_port():
             return 1
 
-        if isinstance(verb, basestring):
-            if verb is "" and self.verb is None:
-                if self.verbose:
-                    print "warning - caller.py: verb is empty. Use POST as default verb"
-                call += " POST "
-            else:
-                if self.verb is not None:
-                    call += self.verb + " "
-                else:
-                    call += " POST "
-                    if self.verbose:
-                        print "warning - caller.py: verb is empty. Use POST as default verb"
+        call = "curl -X "
 
-        call += self.ip + ":" + self.port + "/"
+        if verb is "" :
+            if self.verbose:
+                print "warning - caller.py: verb is empty. Use POST as default verb"
+            call += "POST "
+        else:
+            call += verb + " "
+            if self.verbose:
+                print "warning - caller.py: verb is empty. Use POST as default verb"
 
-        if self.data is not "" or self.data is not None:
-            call += " -d " + self.data
-
-        elif data is not None:
+        if data is not None:
             call += " -d " + data
+
+        call += str(self.serverip) + ":" + str(self.port) + "/"
 
         if isinstance(route, basestring):
             if route[0] is "/":
