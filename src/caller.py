@@ -108,7 +108,7 @@ class Caller(object):
                 print "info - caller.py: port is correct"
             return 0
 
-    def call_route(self, route="", verb="", data=None):
+    def call(self, route="", verb="", data=None):
         """
         Function to make a call
         route defines the service to call
@@ -122,7 +122,7 @@ class Caller(object):
 
         call = "curl -X "
 
-        if verb is "" :
+        if verb is "":
             if self.verbose:
                 print "warning - caller.py: verb is empty. Use POST as default verb"
             call += "POST "

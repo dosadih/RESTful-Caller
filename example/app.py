@@ -20,4 +20,5 @@ if __name__ == '__main__':
     APP.set_verbose(1)
     APP.set_ip(serverip="localhost")
     APP.set_port(port="8080")
-    APP.call_route(route="/dashboard", verb="GET", data=None)
+    APP.call(route="/dashboard", verb="GET", data=None)
+    APP.call(route="/help", verb="GET", data=None)
