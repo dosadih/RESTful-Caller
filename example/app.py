@@ -46,6 +46,10 @@ if __name__ == '__main__':
         ROUTE = "report/" + str(args.job) + "/" + str(args.status)
         APP.call(route=ROUTE, verb="PUT", data=None)
 
+    elif "help" in args.service:
+        ROUTE = "help"
+        APP.call(route=ROUTE, verb="GET", data=None)
+
     elif "dump" in args.service:
         ROUTE = "dump"
         APP.call(route=ROUTE, verb="GET", data=None)
