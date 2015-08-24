@@ -27,6 +27,8 @@ class Caller(object):
         self.verbose = verbose
         self.serverip = None
         self.port = None
+        self.namespace = None
+        self.version = "v1"
 
         if serverip is not None:
             self.set_ip(serverip=serverip)
@@ -34,9 +36,9 @@ class Caller(object):
             self.set_ip("localhost")
 
         if port is not None:
-            self.set_port("8080")
-        else:
             self.set_port(port)
+        else:
+            self.set_port("8080")
 
     def set_verbose(self, verbose=0):
         """
@@ -49,6 +51,22 @@ class Caller(object):
         verbose mode getter
         """
         return self.verbose
+
+    def set_cfg(self, cfg):
+        """
+        Global configuration setter
+        """
+        if "ip" in cfg:
+            self.set_ip(cfg["ip"])
+
+        if "port" in cfg:
+            self.set_port(cfg["port"])
+
+        if "version" in cfg:
+            self.set_version(cfg["version"])
+
+        if "namespace" in cfg:
+            self.set_namespace(cfg["namespace"])
 
     def set_ip(self, serverip=""):
         """
@@ -108,6 +126,30 @@ class Caller(object):
                 print "info - caller.py: port is correct"
             return 0
 
+    def set_version(self, version):
+        """
+        API version setter
+        """
+        self.version = str(version)
+
+    def get_version(self):
+        """
+        API version getter
+        """
+        return self.version
+
+    def set_namespace(self, namespace):
+        """
+        Service namespace setter
+        """
+        self.namespace = str(namespace)
+
+    def get_namespace(self):
+        """
+        Service namepace getter
+        """
+        return self.namespace
+
     def call(self, route="", verb="", data=None):
         """
         Function to make a call
@@ -132,7 +174,7 @@ class Caller(object):
         if data is not None:
             call += " -d " + data
 
-        call += str(self.serverip) + ":" + str(self.port) + "/"
+        call += str(self.serverip) + ":" + str(self.port) + "/" + self.version + "/" + self.namespace + "/"
 
         if isinstance(route, basestring):
             if route[0] is "/":
@@ -141,8 +183,7 @@ class Caller(object):
                 call += route
             if self.verbose:
                 print "info - caller.py: Call done : " + str(call)
-            os.system(call)
-            return 0
+            return os.system(call)
         else:
             if self.verbose:
                 print "error - caller.py: route is wrong. Please specify it as string"
