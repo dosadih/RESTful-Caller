@@ -183,6 +183,7 @@ class Caller(object):
                 call += route
             if self.verbose:
                 print "info - caller.py: Call done : " + str(call)
+            # TODO return stdout from the call with process
             return os.system(call)
         else:
             if self.verbose:
