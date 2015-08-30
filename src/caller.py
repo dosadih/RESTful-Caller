@@ -12,7 +12,7 @@
 Class to make call to micro-service
 """
 
-import os
+import subprocess
 
 class Caller(object):
 
@@ -183,8 +183,11 @@ class Caller(object):
                 call += route
             if self.verbose:
                 print "info - caller.py: Call done : " + str(call)
-            # TODO return stdout from the call with process
-            return os.system(call)
+            call = call.split(" ")
+            proc = subprocess.Popen(call)
+            proc.wait()
+            (stdout, stderr) = proc.communicate()
+            return stdout
         else:
             if self.verbose:
                 print "error - caller.py: route is wrong. Please specify it as string"
