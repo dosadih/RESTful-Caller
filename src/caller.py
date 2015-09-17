@@ -52,7 +52,7 @@ class Caller(object):
         """
         return self.verbose
 
-    def set_cfg(self, cfg):
+    def setup(self, cfg):
         """
         Global configuration setter
         """
@@ -174,7 +174,7 @@ class Caller(object):
         if data is not None:
             call += " -d " + data
 
-        call += str(self.serverip) + ":" + str(self.port) + "/" + self.version + "/" + self.namespace + "/"
+        call += str(self.serverip) + ":" + str(self.port) + "/" + str(self.version) + "/" + str(self.namespace) + "/"
 
         if isinstance(route, basestring):
             if route[0] is "/":
