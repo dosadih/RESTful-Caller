@@ -14,7 +14,7 @@ Class to make call to micro-service
 
 import subprocess
 
-class Caller(object):
+class RESTfulCaller(object):
 
     """
     Class to make call to web service
@@ -77,7 +77,7 @@ class Caller(object):
         else:
             self.serverip = str(serverip)
         if self.verbose:
-            print "info - caller.py: IP is " + str(self.serverip)
+            print "INFO: caller.py: IP is " + str(self.serverip)
 
     def get_ip(self):
         """
@@ -91,11 +91,11 @@ class Caller(object):
         """
         if self.serverip is "" or self.serverip is None:
             if self.verbose:
-                print "error - caller.py: IP is wrong. Please set a correct value"
+                print "ERROR: caller.py: IP is wrong. Please set a correct value"
             return 1
         else:
             if self.verbose:
-                print "info - caller.py: IP is correct"
+                print "INFO: caller.py: IP is correct"
             return 0
 
     def set_port(self, port=""):
@@ -105,7 +105,7 @@ class Caller(object):
         self.port = str(port)
 
         if self.verbose:
-            print "info - caller.py: set port is " + self.port
+            print "INFO: caller.py: set port is " + self.port
 
     def get_port(self):
         """
@@ -119,11 +119,11 @@ class Caller(object):
         """
         if self.port is "" or self.port is None:
             if self.verbose:
-                print "error - caller.py: port is wrong. Please set a correct value"
+                print "ERROR: caller.py: port is wrong. Please set a correct value"
             return 1
         else:
             if self.verbose:
-                print "info - caller.py: port is correct"
+                print "INFO: caller.py: port is correct"
             return 0
 
     def set_version(self, version):
@@ -182,7 +182,7 @@ class Caller(object):
             else:
                 call += route
             if self.verbose:
-                print "info - caller.py: Call done : " + str(call)
+                print "INFO: caller.py: Call done : " + str(call)
             call = call.split(" ")
             proc = subprocess.Popen(call)
             proc.wait()
@@ -190,6 +190,6 @@ class Caller(object):
             return stdout
         else:
             if self.verbose:
-                print "error - caller.py: route is wrong. Please specify it as string"
+                print "ERROR: caller.py: route is wrong. Please specify it as string"
             return 1
 
